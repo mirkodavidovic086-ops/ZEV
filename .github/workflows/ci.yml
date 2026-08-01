@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "feature/**", "fix/**", "db/**", "claude/**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  baza:
+    name: Shema i RLS testovi
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: zevtest
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    env:
+      PGPASSWORD: postgres
+      PSQL: psql -h localhost -U postgres -d zevtest -v ON_ERROR_STOP=1
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instaliraj psql
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Učitaj Supabase stub
+        run: $PSQL -q -f supabase/tests/00_supabase_stub.sql
+
+      - name: Primijeni shemu
+        run: $PSQL -q -f schema.sql
+
+      # Skripta sama puca (exit 3) ako ijedna tvrdnja padne i ispisuje
+      # koje — nije potrebno parsirati izlaz.
+      - name: Smoke test (obračun, glasanje, RLS izolacija)
+        run: $PSQL -q -f supabase/tests/01_smoke_test.sql
+
+      - name: Provjeri da je svaka tabela pod RLS-om
+        run: |
+          $PSQL -tAc "
+            select string_agg(tablename, ', ')
+            from pg_tables t
+            where schemaname = 'public'
+              and not exists (
+                select 1 from pg_class c
+                join pg_namespace n on n.oid = c.relnamespace
+                where n.nspname = 'public' and c.relname = t.tablename
+                  and c.relrowsecurity
+              );
+          " > bez_rls.txt
+          if [ -s bez_rls.txt ] && [ "$(cat bez_rls.txt)" != "" ]; then
+            echo "::error::Tabele bez RLS-a: $(cat bez_rls.txt)"
+            exit 1
+          fi
+          echo "Sve tabele imaju uključen RLS."
+
+  aplikacija:
+    name: Flutter analiza i testovi
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Zavisnosti
+        run: flutter pub get
+
+      - name: Analiza
+        run: flutter analyze
+
+      - name: Testovi
+        run: flutter test

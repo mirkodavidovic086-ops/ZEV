@@ -1,0 +1,111 @@
+{
+  "@@locale": "bs",
+
+  "nazivAplikacije": "MojZEV",
+  "sloganAplikacije": "Vodite svoju zgradu sami — transparentno i bez agencije.",
+
+  "navPocetna": "Početna",
+  "navFinansije": "Finansije",
+  "navGlasanje": "Glasanje",
+  "navKvarovi": "Kvarovi",
+  "navZgrada": "Zgrada",
+
+  "prijavaTelefon": "Telefon",
+  "prijavaEmail": "Email",
+  "prijavaBrojTelefona": "Broj telefona",
+  "prijavaEmailAdresa": "Email adresa",
+  "prijavaPosaljiKod": "Pošalji kod",
+  "prijavaBezLozinke": "Nema lozinki. Poslaćemo vam jednokratni kod.",
+  "otpNaslov": "Potvrda koda",
+  "otpPoslatNa": "Kod smo poslali na {kontakt}",
+  "@otpPoslatNa": {
+    "placeholders": { "kontakt": { "type": "String" } }
+  },
+  "otpPotvrdi": "Potvrdi",
+
+  "finansijeMojeStanje": "Moje stanje",
+  "finansijeRacunZgrade": "Račun zgrade",
+  "finansijeVasDug": "Vaš dug",
+  "finansijeNemateDugovanja": "Nemate dugovanja",
+  "finansijePrikaziUplatnicu": "Prikaži uplatnicu sa QR kodom",
+  "finansijePromet": "Promet",
+  "finansijeStanjeFonda": "Stanje fonda",
+  "finansijePrihodi": "Prihodi (uplate stanara)",
+  "finansijeRashodi": "Rashodi",
+  "finansijeSaldo": "Saldo",
+  "finansijeTransparentnost": "Svaki član zgrade vidi sve stavke — bez izuzetka.",
+
+  "uplatnicaNaslov": "Uplatnica",
+  "uplatnicaPrimalac": "Primalac",
+  "uplatnicaRacun": "Račun",
+  "uplatnicaPozivNaBroj": "Poziv na broj",
+  "uplatnicaIznos": "Iznos",
+  "uplatnicaSkenirajte": "Skenirajte QR kod u aplikaciji vaše banke.",
+
+  "glasanjeNaslov": "Glasanje",
+  "glasanjeNovo": "Novo glasanje",
+  "glasanjeNemaGlasanja": "Trenutno nema glasanja",
+  "glasanjeNemaGlasanjaOpis": "Kad uprava pokrene glasanje, pojaviće se ovdje i dobićete obavještenje.",
+  "glasanjeGlasaliSte": "Glasali ste",
+  "glasanjeZa": "ZA",
+  "glasanjeProtiv": "PROTIV",
+  "glasanjeUzdrzan": "UZDRŽAN",
+  "glasanjeVasGlas": "Vaš glas",
+  "glasanjeRezultat": "Rezultat",
+  "glasanjeNacin": "Način glasanja",
+  "glasanjePotrebnaVecina": "Potrebna većina",
+  "glasanjeKvorum": "Kvorum",
+  "glasanjeRok": "Rok",
+  "glasanjeTajno": "Tajno glasanje",
+  "glasanjeIsticeZa": "Ističe za {trajanje}",
+  "@glasanjeIsticeZa": {
+    "placeholders": { "trajanje": { "type": "String" } }
+  },
+  "glasanjeOdziv": "Odziv {procenat}",
+  "@glasanjeOdziv": {
+    "placeholders": { "procenat": { "type": "String" } }
+  },
+  "glasanjeKvorumIspunjen": "kvorum ispunjen",
+  "glasanjeKvorumNijeIspunjen": "kvorum nije ispunjen",
+  "glasanjeZaKojiProstor": "Za koji prostor glasate?",
+  "glasanjeGlasZabiljezen": "Vaš glas je zabilježen.",
+  "glasanjeNemateProstor": "Nemate prostor sa glasačkim pravom.",
+
+  "kvaroviNaslov": "Kvarovi",
+  "kvaroviPrijavi": "Prijavi kvar",
+  "kvaroviStaJeUKvaru": "Šta je u kvaru?",
+  "kvaroviKategorija": "Kategorija",
+  "kvaroviPrioritet": "Prioritet",
+  "kvaroviLokacija": "Lokacija (opciono)",
+  "kvaroviOpisProblema": "Opis problema",
+  "kvaroviDodajFotografije": "Dodaj fotografije",
+  "kvaroviPosalji": "Pošalji prijavu",
+  "kvaroviPotvrda": "{broj} potvrda",
+  "@kvaroviPotvrda": {
+    "placeholders": { "broj": { "type": "int" } }
+  },
+
+  "zgradaNaslov": "Zgrada",
+  "zgradaImenik": "Imenik stanara",
+  "zgradaHitniKontakti": "Hitni kontakti",
+  "zgradaDokumenti": "Dokumenti",
+  "zgradaDokumentiOpis": "Zapisnici, ugovori, računi",
+  "zgradaUprava": "Uprava",
+  "zgradaClanoviIUloge": "Članovi i uloge",
+  "zgradaPozivnice": "Pozivnice",
+  "zgradaMjesecniObracun": "Mjesečni obračun",
+  "zgradaMojProfil": "Moj profil",
+  "zgradaNisteClan": "Niste član nijedne zgrade",
+  "zgradaZatraziPozivnicu": "Zatražite pozivnicu od uprave.",
+
+  "profilObavjestenja": "Obavještenja",
+  "profilVidljivost": "Vidljivost u imeniku",
+  "profilJezik": "Jezik",
+  "profilOdjava": "Odjava",
+
+  "opsteZatvori": "Zatvori",
+  "opsteSacuvaj": "Sačuvaj",
+  "opsteOtkazi": "Otkaži",
+  "opsteGreska": "Došlo je do greške. Pokušajte ponovo.",
+  "opsteUcitavanje": "Učitavanje…"
+}

@@ -1,0 +1,42 @@
+# ---- Tajne ------------------------------------------------------------------
+# NIKAD ne commituj ključeve. `service_role` ključ posebno — vidi CLAUDE.md 4.5.
+.env
+.env.*
+!.env.example
+*.env.json
+!env.example.json
+
+# ---- Flutter / Dart ---------------------------------------------------------
+app/.dart_tool/
+app/.packages
+app/.pub-cache/
+app/.pub/
+app/build/
+app/.flutter-plugins
+app/.flutter-plugins-dependencies
+app/pubspec.lock
+**/*.g.dart
+**/*.freezed.dart
+app/lib/l10n/generated/
+app/coverage/
+
+# Platformske mape (generišu se sa `flutter create`)
+app/android/
+app/ios/
+app/linux/
+app/macos/
+app/windows/
+app/web/
+
+# ---- Supabase ---------------------------------------------------------------
+supabase/.branches/
+supabase/.temp/
+supabase/functions/**/.env
+
+# ---- Alati / OS -------------------------------------------------------------
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+*.log

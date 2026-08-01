@@ -1,0 +1,56 @@
+name: mojzev
+description: MojZEV — samostalno vođenje Zajednice etažnih vlasnika.
+publish_to: "none"
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+  flutter: ">=3.24.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # Backend
+  supabase_flutter: ^2.5.6
+
+  # State management i rutiranje
+  flutter_riverpod: ^2.5.1
+  go_router: ^14.2.0
+
+  # UI
+  intl: ^0.19.0
+  cached_network_image: ^3.3.1
+  qr_flutter: ^4.1.0            # QR kod na uplatnici
+  fl_chart: ^0.68.0             # grafikoni u modulu Finansije
+
+  # Uređaj
+  image_picker: ^1.1.2          # slike kvarova
+  file_picker: ^8.0.6
+  share_plus: ^9.0.0
+  url_launcher: ^6.3.0
+
+  # Ostalo
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+  logger: ^2.4.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.11
+  freezed: ^2.5.7
+  json_serializable: ^6.8.0
+  mocktail: ^1.0.4
+
+flutter:
+  uses-material-design: true
+  generate: true                # generiše l10n iz lib/l10n/*.arb
+  assets:
+    - assets/images/
+    - assets/icons/
