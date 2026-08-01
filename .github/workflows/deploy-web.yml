@@ -1,0 +1,84 @@
+name: Objavi Web verziju (GitHub Pages)
+
+# Gradi Flutter Web verziju aplikacije i objavljuje je besplatno na GitHub
+# Pages — bez ikakve instalacije na lokalnom računaru.
+#
+# JEDNOKRATNO PODEŠAVANJE (mora uraditi vlasnik repozitorija):
+#   1. Settings → Pages → Build and deployment → Source: "GitHub Actions"
+#   2. Settings → Secrets and variables → Actions → New repository secret:
+#        SUPABASE_URL        (iz Supabase Project Settings → API)
+#        SUPABASE_ANON_KEY   (iz Supabase Project Settings → API, "anon public")
+#      Ovo NIJE tajni ključ u klasičnom smislu — dizajniran je da bude javan
+#      u klijentu (vidi CLAUDE.md, sekcija 4.5) — ali se ipak čuva kao secret
+#      radi urednosti i lakše promjene bez izmjene koda.
+#
+# Dok #2 nije podešeno, build i dalje prolazi — aplikacija će pri otvaranju
+# prikazati grešku "Nedostaje SUPABASE_URL..." dok se ne dodaju vrijednosti.
+
+on:
+  push:
+    branches:
+      - main
+      - claude/mojzev-saas-architecture-nzq9wd
+    paths:
+      - "app/**"
+      - ".github/workflows/deploy-web.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      # Platformski folderi (web/, android/, ...) se namjerno ne čuvaju u
+      # repozitoriju (vidi .gitignore) — generišu se ovdje, svježi za tačnu
+      # verziju Flutter SDK-a koja gradi aplikaciju. `flutter create .` na
+      # postojećem projektu NE prepisuje pubspec.yaml ni lib/.
+      - name: Generiši web platformu
+        run: flutter create --platforms=web --project-name mojzev .
+
+      - name: Zavisnosti
+        run: flutter pub get
+
+      - name: Build (web)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          flutter build web --release \
+            --base-href "/ZEV/" \
+            --dart-define=OKRUZENJE=test \
+            --dart-define=SUPABASE_URL="$SUPABASE_URL" \
+            --dart-define=SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: app/build/web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
