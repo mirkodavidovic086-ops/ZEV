@@ -17,7 +17,7 @@ class Formatiranje {
     final f = valuta == 'KM'
         ? _novac
         : NumberFormat.currency(
-            locale: 'bs_BA', symbol: valuta, decimalDigits: 2);
+            locale: 'bs_BA', symbol: valuta, decimalDigits: 2,);
     return f.format(iznos);
   }
 

@@ -111,11 +111,11 @@ class _KvarKartica extends StatelessWidget {
                   children: [
                     Text('#$broj · ${kategorija.naziv}',
                         style: tema.textTheme.bodySmall
-                            ?.copyWith(color: tema.colorScheme.outline)),
+                            ?.copyWith(color: tema.colorScheme.outline),),
                     const SizedBox(height: 4),
                     Text(naslov,
                         style: tema.textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.bold)),
+                            ?.copyWith(fontWeight: FontWeight.bold),),
                     const SizedBox(height: 8),
                     Wrap(
                       spacing: 8,

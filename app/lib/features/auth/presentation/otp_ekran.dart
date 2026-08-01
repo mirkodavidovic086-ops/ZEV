@@ -64,7 +64,7 @@ class _OtpEkranState extends ConsumerState<OtpEkran> {
             padding: const EdgeInsets.all(24),
             children: [
               Text('Kod smo poslali na ${widget.kontakt}',
-                  textAlign: TextAlign.center),
+                  textAlign: TextAlign.center,),
               const SizedBox(height: 24),
               TextField(
                 controller: _kontroler,

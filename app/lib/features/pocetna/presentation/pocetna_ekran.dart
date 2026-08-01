@@ -82,7 +82,7 @@ class _HitnoBanner extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .titleMedium
-                          ?.copyWith(fontWeight: FontWeight.bold)),
+                          ?.copyWith(fontWeight: FontWeight.bold),),
                 ),
               ],
             ),
@@ -123,7 +123,7 @@ class _Obavjestenje extends StatelessWidget {
             const SizedBox(height: 12),
             Text('$autor · $prije',
                 style: tema.textTheme.bodySmall
-                    ?.copyWith(color: tema.colorScheme.outline)),
+                    ?.copyWith(color: tema.colorScheme.outline),),
           ],
         ),
       ),

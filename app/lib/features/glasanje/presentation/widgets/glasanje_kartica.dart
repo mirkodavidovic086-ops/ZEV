@@ -40,7 +40,7 @@ class GlasanjeKartica extends StatelessWidget {
               const SizedBox(height: 8),
               Text(glasanje.naslov,
                   style: tema.textTheme.titleMedium
-                      ?.copyWith(fontWeight: FontWeight.bold)),
+                      ?.copyWith(fontWeight: FontWeight.bold),),
               const SizedBox(height: 4),
               Text(
                 glasanje.opis,
@@ -73,7 +73,7 @@ class GlasanjeKartica extends StatelessWidget {
                     const Icon(Icons.schedule, size: 16),
                     const SizedBox(width: 6),
                     Text('Ističe za ${Formatiranje.trajanje(glasanje.preostalo)}',
-                        style: tema.textTheme.bodySmall),
+                        style: tema.textTheme.bodySmall,),
                   ],
                 ),
               ],
@@ -111,7 +111,7 @@ class _StatusZnacka extends StatelessWidget {
       child: Text(
         tekst,
         style: TextStyle(
-            color: boja, fontWeight: FontWeight.bold, fontSize: 11),
+            color: boja, fontWeight: FontWeight.bold, fontSize: 11,),
       ),
     );
   }

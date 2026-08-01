@@ -26,7 +26,7 @@ Future<T> mapirajGresku<T>(Future<T> Function() akcija) async {
     throw AppGreska(e.message, kod: 'auth', uzrok: e);
   } on StorageException catch (e) {
     throw AppGreska('Greška pri radu sa fajlom: ${e.message}',
-        kod: e.statusCode, uzrok: e);
+        kod: e.statusCode, uzrok: e,);
   }
 }
 

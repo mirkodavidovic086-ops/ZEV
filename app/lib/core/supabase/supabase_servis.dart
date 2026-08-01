@@ -11,7 +11,7 @@ class SupabaseServis {
     Okruzenje.provjeri();
     await Supabase.initialize(
       url: Okruzenje.supabaseUrl,
-      anonKey: Okruzenje.supabaseAnonKljuc,
+      publishableKey: Okruzenje.supabaseAnonKljuc,
       authOptions: const FlutterAuthClientOptions(
         authFlowType: AuthFlowType.pkce,
       ),

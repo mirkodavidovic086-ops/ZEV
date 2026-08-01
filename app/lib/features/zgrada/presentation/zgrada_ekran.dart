@@ -60,7 +60,7 @@ class ZgradaEkran extends ConsumerWidget {
             const Padding(
               padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
               child: Text('Uprava',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+                  style: TextStyle(fontWeight: FontWeight.bold),),
             ),
             ListTile(
               leading: const Icon(Icons.people_outline),

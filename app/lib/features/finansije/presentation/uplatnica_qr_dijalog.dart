@@ -35,7 +35,7 @@ class UplatnicaQrDijalog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text('Uplatnica',
-                  style: Theme.of(context).textTheme.titleLarge),
+                  style: Theme.of(context).textTheme.titleLarge,),
               const SizedBox(height: 16),
               Container(
                 padding: const EdgeInsets.all(12),
@@ -51,7 +51,7 @@ class UplatnicaQrDijalog extends StatelessWidget {
               _Podatak(oznaka: 'Račun', vrijednost: racun),
               _Podatak(oznaka: 'Poziv na broj', vrijednost: pozivNaBroj),
               _Podatak(
-                  oznaka: 'Iznos', vrijednost: Formatiranje.novac(iznos)),
+                  oznaka: 'Iznos', vrijednost: Formatiranje.novac(iznos),),
               const SizedBox(height: 16),
               Text(
                 'Skenirajte QR kod u aplikaciji vaše banke.',
@@ -90,7 +90,7 @@ class _Podatak extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall
-                    ?.copyWith(color: Theme.of(context).colorScheme.outline)),
+                    ?.copyWith(color: Theme.of(context).colorScheme.outline),),
           ),
           Expanded(
             child: SelectableText(

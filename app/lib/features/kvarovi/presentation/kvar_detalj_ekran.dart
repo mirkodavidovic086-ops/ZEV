@@ -17,7 +17,7 @@ class KvarDetaljEkran extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Text('Kvar: $kvarId\n\nEkran u izradi.',
-              textAlign: TextAlign.center),
+              textAlign: TextAlign.center,),
         ),
       ),
     );

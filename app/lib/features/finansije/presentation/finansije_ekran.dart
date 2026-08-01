@@ -56,7 +56,7 @@ class _MojeStanje extends ConsumerWidget {
             child: Column(
               children: [
                 Text(saldo > 0 ? 'Vaš dug' : 'Nemate dugovanja',
-                    style: Theme.of(context).textTheme.titleMedium),
+                    style: Theme.of(context).textTheme.titleMedium,),
                 const SizedBox(height: 8),
                 Text(
                   Formatiranje.novac(saldo),
@@ -122,19 +122,19 @@ class _RacunZgrade extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Stanje fonda',
-                    style: Theme.of(context).textTheme.titleMedium),
+                    style: Theme.of(context).textTheme.titleMedium,),
                 const SizedBox(height: 12),
-                _Red(oznaka: 'Prihodi (uplate stanara)', iznos: 1240.00),
-                _Red(oznaka: 'Rashodi', iznos: -890.50),
-                Divider(height: 24),
-                _Red(oznaka: 'Saldo', iznos: 349.50, istaknuto: true),
+                const _Red(oznaka: 'Prihodi (uplate stanara)', iznos: 1240.00),
+                const _Red(oznaka: 'Rashodi', iznos: -890.50),
+                const Divider(height: 24),
+                const _Red(oznaka: 'Saldo', iznos: 349.50, istaknuto: true),
               ],
             ),
           ),
         ),
         const SizedBox(height: 16),
         Text('Svaki član zgrade vidi sve stavke — bez izuzetka.',
-            style: Theme.of(context).textTheme.bodySmall),
+            style: Theme.of(context).textTheme.bodySmall,),
       ],
     );
   }

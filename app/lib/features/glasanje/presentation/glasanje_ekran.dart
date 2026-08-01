@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../shared/models/enumi.dart';
 import '../../../shared/models/modeli.dart';
 import '../../../shared/providers/kontekst_provider.dart';
 import '../data/glasanje_repository_supabase.dart';
@@ -75,10 +74,10 @@ class _Prazno extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.how_to_vote_outlined,
-                size: 64, color: Theme.of(context).colorScheme.outline),
+                size: 64, color: Theme.of(context).colorScheme.outline,),
             const SizedBox(height: 16),
             Text('Trenutno nema glasanja',
-                style: Theme.of(context).textTheme.titleMedium),
+                style: Theme.of(context).textTheme.titleMedium,),
             const SizedBox(height: 8),
             Text(
               'Kad uprava pokrene glasanje, pojaviće se ovdje i dobićete '

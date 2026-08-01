@@ -64,12 +64,12 @@ class _PrijavaEkranState extends ConsumerState<PrijavaEkran> {
               shrinkWrap: true,
               padding: const EdgeInsets.all(24),
               children: [
-                Icon(Icons.apartment, size: 72, color: Tema.primarna),
+                const Icon(Icons.apartment, size: 72, color: Tema.primarna),
                 const SizedBox(height: 16),
                 Text('MojZEV',
                     textAlign: TextAlign.center,
                     style: tema.textTheme.headlineMedium
-                        ?.copyWith(fontWeight: FontWeight.bold)),
+                        ?.copyWith(fontWeight: FontWeight.bold),),
                 const SizedBox(height: 8),
                 Text(
                   'Vodite svoju zgradu sami — transparentno i bez agencije.',
@@ -83,11 +83,11 @@ class _PrijavaEkranState extends ConsumerState<PrijavaEkran> {
                     ButtonSegment(
                         value: true,
                         icon: Icon(Icons.sms_outlined),
-                        label: Text('Telefon')),
+                        label: Text('Telefon'),),
                     ButtonSegment(
                         value: false,
                         icon: Icon(Icons.mail_outline),
-                        label: Text('Email')),
+                        label: Text('Email'),),
                   ],
                   selected: {_telefonom},
                   onSelectionChanged: (s) =>
@@ -108,7 +108,7 @@ class _PrijavaEkranState extends ConsumerState<PrijavaEkran> {
                     labelText: _telefonom ? 'Broj telefona' : 'Email adresa',
                     hintText: _telefonom ? '+387 6x xxx xxx' : 'ime@primjer.ba',
                     prefixIcon: Icon(
-                        _telefonom ? Icons.phone_outlined : Icons.alternate_email),
+                        _telefonom ? Icons.phone_outlined : Icons.alternate_email,),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -118,7 +118,7 @@ class _PrijavaEkranState extends ConsumerState<PrijavaEkran> {
                       ? const SizedBox(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2))
+                          child: CircularProgressIndicator(strokeWidth: 2),)
                       : const Text('Pošalji kod'),
                 ),
                 const SizedBox(height: 12),

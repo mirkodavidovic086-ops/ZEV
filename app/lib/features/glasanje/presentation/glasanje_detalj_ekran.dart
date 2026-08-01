@@ -78,7 +78,7 @@ class GlasanjeDetaljEkran extends ConsumerWidget {
                 style: Theme.of(context)
                     .textTheme
                     .headlineSmall
-                    ?.copyWith(fontWeight: FontWeight.bold)),
+                    ?.copyWith(fontWeight: FontWeight.bold),),
             const SizedBox(height: 12),
             Text(g.opis),
             const SizedBox(height: 24),
@@ -90,20 +90,20 @@ class GlasanjeDetaljEkran extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _Pravilo(
-                        oznaka: 'Način glasanja', vrijednost: g.nacin.naziv),
+                        oznaka: 'Način glasanja', vrijednost: g.nacin.naziv,),
                     _Pravilo(
                         oznaka: 'Potrebna većina',
-                        vrijednost: g.potrebnaVecina.naziv),
+                        vrijednost: g.potrebnaVecina.naziv,),
                     _Pravilo(
                         oznaka: 'Kvorum',
-                        vrijednost: Formatiranje.procenat(g.kvorumProcenat)),
+                        vrijednost: Formatiranje.procenat(g.kvorumProcenat),),
                     _Pravilo(
                         oznaka: 'Rok',
-                        vrijednost: Formatiranje.datumVrijeme(g.krajAt)),
+                        vrijednost: Formatiranje.datumVrijeme(g.krajAt),),
                     if (g.tajno)
                       const _Pravilo(
                           oznaka: 'Tajnost',
-                          vrijednost: 'Tajno glasanje'),
+                          vrijednost: 'Tajno glasanje',),
                   ],
                 ),
               ),
@@ -115,14 +115,14 @@ class GlasanjeDetaljEkran extends ConsumerWidget {
             if (g.jeOtvoreno) ...[
               const SizedBox(height: 24),
               Text('Vaš glas',
-                  style: Theme.of(context).textTheme.titleMedium),
+                  style: Theme.of(context).textTheme.titleMedium,),
               const SizedBox(height: 12),
               Row(
                 children: [
                   Expanded(
                     child: FilledButton.icon(
                       style: FilledButton.styleFrom(
-                          backgroundColor: Tema.uspjeh),
+                          backgroundColor: Tema.uspjeh,),
                       onPressed: () =>
                           _glasaj(context, ref, OpcijaGlasa.za),
                       icon: const Icon(Icons.thumb_up_outlined),
@@ -133,7 +133,7 @@ class GlasanjeDetaljEkran extends ConsumerWidget {
                   Expanded(
                     child: FilledButton.icon(
                       style: FilledButton.styleFrom(
-                          backgroundColor: Tema.greska),
+                          backgroundColor: Tema.greska,),
                       onPressed: () =>
                           _glasaj(context, ref, OpcijaGlasa.protiv),
                       icon: const Icon(Icons.thumb_down_outlined),
@@ -169,11 +169,11 @@ class _Pravilo extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(oznaka,
-              style: TextStyle(color: Theme.of(context).colorScheme.outline)),
+              style: TextStyle(color: Theme.of(context).colorScheme.outline),),
           Flexible(
             child: Text(vrijednost,
                 textAlign: TextAlign.end,
-                style: const TextStyle(fontWeight: FontWeight.w600)),
+                style: const TextStyle(fontWeight: FontWeight.w600),),
           ),
         ],
       ),
@@ -195,14 +195,14 @@ class _Rezultat extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Rezultat',
-                style: Theme.of(context).textTheme.titleMedium),
+                style: Theme.of(context).textTheme.titleMedium,),
             const SizedBox(height: 12),
             _Traka(oznaka: 'ZA', vrijednost: r.za, ukupno: r.izaslo,
-                boja: Tema.uspjeh),
+                boja: Tema.uspjeh,),
             _Traka(oznaka: 'PROTIV', vrijednost: r.protiv, ukupno: r.izaslo,
-                boja: Tema.greska),
+                boja: Tema.greska,),
             _Traka(oznaka: 'UZDRŽAN', vrijednost: r.uzdrzan, ukupno: r.izaslo,
-                boja: Colors.grey),
+                boja: Colors.grey,),
             const SizedBox(height: 12),
             Text(
               'Odziv: ${Formatiranje.procenat(r.odzivProcenat)} · '
@@ -271,7 +271,7 @@ class _IzborStana extends StatelessWidget {
           const Padding(
             padding: EdgeInsets.all(16),
             child: Text('Za koji prostor glasate?',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
           ),
           for (final s in stanovi)
             ListTile(
