@@ -1,5 +1,3 @@
-import 'enumi.dart';
-
 /// Domenski modeli. Preslikavaju tabele iz `schema.sql`.
 ///
 /// Namjerno su pisani ručno (bez `freezed`/`json_serializable`) da bi skelet
@@ -8,6 +6,8 @@ import 'enumi.dart';
 library;
 
 // ignore_for_file: avoid_dynamic_calls
+
+import 'enumi.dart';
 
 double? _dbl(Object? v) => v == null ? null : (v as num).toDouble();
 DateTime? _dt(Object? v) => v == null ? null : DateTime.parse(v as String);
