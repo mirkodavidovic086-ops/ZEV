@@ -21,7 +21,10 @@ dependencies:
   go_router: ^14.2.0
 
   # UI
-  intl: ^0.19.0
+  # Bez gornje granice: flutter_localizations iz SDK-a zaključava tačnu
+  # verziju intl-a, pa fiksna gornja granica ovdje puca pri svakoj promjeni
+  # Flutter SDK-a (vidi CI log builda #1).
+  intl: any
   cached_network_image: ^3.3.1
   qr_flutter: ^4.1.0            # QR kod na uplatnici
   fl_chart: ^0.68.0             # grafikoni u modulu Finansije
