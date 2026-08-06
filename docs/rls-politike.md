@@ -78,6 +78,11 @@ pojedinačne glasove. Rezultat se dobija isključivo agregatom kroz
 
 Ne dodavati "admin može vidjeti" prečicu — to poništava svrhu tajnog glasanja.
 
+Pokriveno tvrdnjama 35–39 u `supabase/tests/01_smoke_test.sql`. Tvrdnja 37
+(uprava **vidi** glasove javnog glasanja) je kontrolna: bez nje bi tvrdnja 36
+prolazila i kad bi uprava bila slijepa iz nekog sasvim drugog razloga.
+Provjereno mutacijom — dodavanje `or je_uprava(...)` u politiku obara test.
+
 ### 3.2 Knjiga je append-only
 
 `transakcije_uplatnice` nema `DELETE` politiku — brisanje je nemoguće za sve.

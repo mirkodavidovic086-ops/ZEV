@@ -120,7 +120,7 @@ mojzev/
 │   ├── seed.sql                # Demo podaci za lokalni razvoj
 │   └── tests/
 │       ├── 00_supabase_stub.sql
-│       └── 01_smoke_test.sql   # 37 tvrdnji: obračun, glasanje, RLS izolacija
+│       └── 01_smoke_test.sql   # 42 tvrdnje: obračun, glasanje, tajnost, RLS
 │
 └── app/                        # Flutter aplikacija
     ├── pubspec.yaml
@@ -317,10 +317,10 @@ supabase functions deploy zatvori-glasanje
 
 ### Baza
 
-Smoke test pokriva 37 tvrdnji: mjesečni obračun, idempotentnost, QR i poziv na
+Smoke test pokriva 42 tvrdnje: mjesečni obračun, idempotentnost, QR i poziv na
 broj, append-only zaštitu, težinsko glasanje sa 2/3 većinom, zatvaranje
-glasanja, **RLS izolaciju između dvije zgrade** i zaštitu od eskalacije
-privilegija.
+glasanja, **tajnost glasačkog listića**, **RLS izolaciju između dvije zgrade**
+i zaštitu od eskalacije privilegija.
 
 ```bash
 supabase db reset

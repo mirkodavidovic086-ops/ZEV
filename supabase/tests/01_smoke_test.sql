@@ -2,8 +2,8 @@
 --  MojZEV — funkcionalni smoke test
 -- =============================================================================
 --  Pokriva: mjesečni obračun, uplatnice (QR + poziv na broj), append-only
---  knjigu, težinsko glasanje, zatvaranje glasanja, RLS izolaciju između
---  zgrada i zaštitu od eskalacije privilegija.
+--  knjigu, težinsko glasanje, zatvaranje glasanja, tajnost glasačkog listića,
+--  RLS izolaciju između zgrada i zaštitu od eskalacije privilegija.
 --
 --  Pokretanje uz Supabase:
 --      supabase db reset
@@ -67,6 +67,7 @@ $$;
 \set stanA3  'cccccccc-0000-0000-0000-000000000003'
 \set stanB1  'dddddddd-0000-0000-0000-000000000001'
 \set glas1   'eeeeeeee-0000-0000-0000-000000000001'
+\set tajno_g 'eeeeeeee-0000-0000-0000-000000000002'
 
 -- Rezultati upita se prigušuju: tvrdnje se ispisuju kroz NOTICE/WARNING
 -- (stderr), pa je izlaz čitljiv. Sažetak na kraju vraća ispis.
@@ -424,10 +425,72 @@ select pg_temp.tvrdi(
 );
 
 \echo ''
+\echo '=== TAJNO GLASANJE ========================================='
+
+-- CLAUDE.md §4.6: kad je `glasanja.tajno`, pojedinačni glas ne vidi niko osim
+-- samog glasača — ni uprava. Rezultat postoji isključivo kao agregat.
+-- Bez ovih tvrdnji, "admin vidi sve" prečica u `glasovi_select` prošla bi
+-- nezapaženo: sve ostale tvrdnje bi i dalje bile zelene.
+
+insert into public.glasanja (id, zgrada_id, kreirao_id, naslov, opis, status,
+                             nacin, tajno, pocetak_at, kraj_at)
+values (:'tajno_g', :'zgA', :'pred', 'Tajno: povjerenje upravi',
+        'Provjera tajnosti glasackog listica', 'aktivno', 'po_povrsini', true,
+        now() - interval '1 day', now() + interval '7 days');
+
+set role authenticated;
+
+select set_config('test.uid', :'st1', false);
+insert into public.glasovi (glasanje_id, stan_id, korisnik_id, opcija)
+values (:'tajno_g', :'stanA2', :'st1', 'za');
+
+select set_config('test.uid', :'st2', false);
+insert into public.glasovi (glasanje_id, stan_id, korisnik_id, opcija)
+values (:'tajno_g', :'stanA3', :'st2', 'protiv');
+
+select set_config('test.uid', :'st1', false);
+
+select pg_temp.tvrdi(
+  '35 glasac vidi vlastiti glas i kad je glasanje tajno',
+  (select count(*) from public.glasovi where glasanje_id = :'tajno_g') = 1
+);
+
+select set_config('test.uid', :'pred', false);
+
+select pg_temp.tvrdi(
+  '36 uprava NE vidi pojedinacne glasove tajnog glasanja',
+  (select count(*) from public.glasovi where glasanje_id = :'tajno_g') = 0
+);
+
+-- Kontrola: dokazuje da tvrdnja 36 nije lažno pozitivna zbog toga što uprava
+-- ionako ne bi vidjela nijedan glas.
+select pg_temp.tvrdi(
+  '37 uprava vidi pojedinacne glasove JAVNOG glasanja',
+  (select count(*) from public.glasovi where glasanje_id = :'glas1') = 3
+);
+
+-- Tajnost ne smije ukinuti mjerljivost rezultata.
+select set_config('test.uid', :'st1', false);
+delete from public.glasovi where glasanje_id = :'tajno_g';
+
+reset role;
+
+select pg_temp.tvrdi(
+  '38 brisanje glasa nije dozvoljeno ni vlastitog',
+  (select count(*) from public.glasovi where glasanje_id = :'tajno_g') = 2
+);
+
+select pg_temp.tvrdi(
+  '39 agregat tajnog glasanja ostaje tacan',
+  (r ->> 'za')::numeric = 40 and (r ->> 'protiv')::numeric = 100,
+  'za = ' || (r ->> 'za') || ', protiv = ' || (r ->> 'protiv')
+) from (select public.fn_rezultat_glasanja(:'tajno_g') as r) s;
+
+\echo ''
 \echo '=== POGLEDI I POZIVNICE ===================================='
 
 select pg_temp.tvrdi(
-  '35 pogled_stanje_stana racuna saldo',
+  '40 pogled_stanje_stana racuna saldo',
   saldo = 6.00,
   'saldo = ' || saldo
 ) from public.pogled_stanje_stana where stan_id = :'stanA1';
@@ -438,16 +501,16 @@ values (:'zgA', :'stanA2', 60, 'POZIV-ABC123');
 select set_config('test.uid', :'stranac', false);
 
 select pg_temp.tvrdi(
-  '36 pozivnica kreira clanstvo (neosjetljiva na velicinu slova)',
+  '41 pozivnica kreira clanstvo (neosjetljiva na velicinu slova)',
   public.fn_iskoristi_pozivnicu('poziv-abc123') is not null
 );
 
 do $$
 begin
   perform public.fn_iskoristi_pozivnicu('POZIV-ABC123');
-  perform pg_temp.tvrdi('37 pozivnica se ne moze iskoristiti dvaput', false);
+  perform pg_temp.tvrdi('42 pozivnica se ne moze iskoristiti dvaput', false);
 exception when others then
-  perform pg_temp.tvrdi('37 pozivnica se ne moze iskoristiti dvaput', true);
+  perform pg_temp.tvrdi('42 pozivnica se ne moze iskoristiti dvaput', true);
 end $$;
 
 -- =============================================================================
