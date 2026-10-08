@@ -291,8 +291,12 @@ interfejs**, ne može se postići iz koda:
    `SUPABASE_URL` i `SUPABASE_ANON_KEY` (iz Supabase → Project Settings → API,
    ključ `anon public`)
 
-Dok korak 2 nije podešen, build prolazi i stranica se otvori, ali aplikacija
-prikaže `Nedostaje SUPABASE_URL` — treba joj dostupan Supabase projekat. Lokalni
+Dok korak 2 nije podešen, build prolazi i stranica se otvori, ali ostaje
+**prazna (bijela)**. `main()` zove `SupabaseServis.inicijalizuj()` →
+`Okruzenje.provjeri()` **prije** `runApp()`, i nema `try/catch`, pa
+`StateError: Nedostaje SUPABASE_URL` pukne prije nego se išta nacrta — poruka
+ide samo u konzolu browsera (F12), ne na ekran. Prazna stranica ovdje znači
+„nedostaju ključevi", ne „deploy je pukao". Lokalni
 `supabase start` sluša na `127.0.0.1` i **nije** vidljiv hostovanoj stranici; za
 ovaj put koristi Supabase u cloudu.
 
