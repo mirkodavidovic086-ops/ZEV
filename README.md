@@ -296,6 +296,30 @@ prikaže `Nedostaje SUPABASE_URL` — treba joj dostupan Supabase projekat. Loka
 `supabase start` sluša na `127.0.0.1` i **nije** vidljiv hostovanoj stranici; za
 ovaj put koristi Supabase u cloudu.
 
+Šemu na cloud projekat možeš primijeniti bez ikakvog alata: Supabase →
+`SQL Editor` → zalijepi `schema.sql` → `Run`. (`schema.sql` sam kreira
+ekstenzije `pgcrypto`, `citext` i `pg_trgm`.) Za demo podatke zalijepi i
+`supabase/seed.sql`.
+
+> ⚠️ **Prva prijava na cloudu te ostavi u praznoj aplikaciji.** Test OTP brojevi
+> rade samo lokalno, pa se na cloudu prijavljuješ magic linkom na email —
+> a to kreira **novog** korisnika sa novim UUID-om, koji nema zapis u
+> `clanstva`. RLS tada ispravno ne pokazuje ništa, a aplikacija trenutno
+> **nema ekran za unos pozivnice** (postoji samo tekst „Zatražite pozivnicu od
+> uprave"), pa nema načina da sam uđeš u zgradu.
+>
+> Dok se taj ekran ne doda, nakon prve prijave pokreni u `SQL Editor`-u:
+>
+> ```sql
+> insert into public.clanstva (korisnik_id, zgrada_id, stan_id, uloga_id)
+> select u.id,
+>        'aaaaaaaa-0000-0000-0000-000000000001',
+>        'cccccccc-0000-0000-0000-000000000001',
+>        10                                     -- 10 = predsjednik
+>   from auth.users u
+>  where u.email = 'tvoj@email.ba';             -- email kojim si se prijavio
+> ```
+
 ### B. Lokalno, na svom računaru
 
 #### Preduslovi
@@ -355,7 +379,27 @@ flutter run -d android --dart-define-from-file=../.env.json
 `StateError: Nedostaje SUPABASE_URL...` — to je namjerno, vidi
 `Okruzenje.provjeri()`.
 
-#### 4. Edge Functions
+#### 4. Prijava u testu (bez stvarnog SMS-a)
+
+`supabase db reset` primijeni i `supabase/seed.sql`, koji kreira demo zgradu,
+stanove i četiri korisnika **sa članstvima** — pa odmah imaš šta gledati.
+
+Prijava ide preko test brojeva iz `supabase/config.toml`
+(`[auth.sms.test_otp]`) — nikakav SMS se ne šalje:
+
+| Broj telefona | OTP kod | Uloga u demo zgradi |
+|---|---|---|
+| `38761000001` | `123456` | **Predsjednik ZEV-a** — Amir (vidi sve, može mijenjati) |
+| `38761000002` | `123456` | **Etažni vlasnik** — Lejla (vidi samo svoj stan) |
+
+Prijavi se oba puta da vidiš razliku Predsjednik vs Etažni vlasnik — to je
+najkorisniji test, jer pokazuje RLS na djelu: isti ekran Finansije pokazuje
+cijelu knjigu zgrade predsjedniku, a samo vlastita zaduženja vlasniku.
+
+> Test OTP radi **samo** na lokalnom Supabase-u. Vidi napomenu u sekciji A za
+> hostovanu verziju.
+
+#### 5. Edge Functions
 
 ```bash
 supabase functions serve
