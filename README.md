@@ -101,6 +101,8 @@ mojzev/
 ├── CLAUDE.md                   # Pravila razvoja — pročitaj prvo
 ├── README.md                   # Ovaj fajl
 ├── schema.sql                  # Referentni snapshot kompletne baze
+├── .env.example                # Konfiguracija za Supabase CLI / Edge Functions
+├── env.example.json            # Konfiguracija za Flutter aplikaciju
 │
 ├── docs/
 │   ├── arhitektura.md          # Pregled sistema, tokovi podataka
@@ -269,14 +271,41 @@ kvarovi/<zgrada_id>/<kvar_id>/<uuid>.jpg
 
 ## 🚀 Pokretanje
 
-### Preduslovi
+Dva puta. Ako samo želiš **vidjeti** aplikaciju, uzmi A — ne traži nikakvu
+instalaciju na tvom računaru.
+
+### A. Hostovana Web verzija (bez instalacije)
+
+`.github/workflows/deploy-web.yml` gradi Flutter Web i objavljuje ga besplatno
+na GitHub Pages pri svakom pushu na `main` ili `claude/**`:
+
+```
+https://<vlasnik>.github.io/ZEV/
+```
+
+Jednokratno podešavanje — **mora ga uraditi vlasnik repozitorija kroz GitHub
+interfejs**, ne može se postići iz koda:
+
+1. `Settings` → `Pages` → `Build and deployment` → Source: **GitHub Actions**
+2. `Settings` → `Secrets and variables` → `Actions` → dodaj dva secreta:
+   `SUPABASE_URL` i `SUPABASE_ANON_KEY` (iz Supabase → Project Settings → API,
+   ključ `anon public`)
+
+Dok korak 2 nije podešen, build prolazi i stranica se otvori, ali aplikacija
+prikaže `Nedostaje SUPABASE_URL` — treba joj dostupan Supabase projekat. Lokalni
+`supabase start` sluša na `127.0.0.1` i **nije** vidljiv hostovanoj stranici; za
+ovaj put koristi Supabase u cloudu.
+
+### B. Lokalno, na svom računaru
+
+#### Preduslovi
 
 ```bash
 flutter --version     # >= 3.24
 supabase --version    # >= 1.200
 ```
 
-### 1. Backend
+#### 1. Backend
 
 ```bash
 supabase start                 # Postgres + Auth + Storage + Studio lokalno
@@ -285,26 +314,48 @@ supabase db reset              # primijeni migracije + seed
 
 Studio: http://localhost:54323
 
-### 2. Konfiguracija
+#### 2. Konfiguracija
+
+Dva odvojena fajla — ne miješaj ih:
+
+| Fajl | Čita ga | Format |
+|---|---|---|
+| `.env` | Supabase CLI i Edge Functions | `KLJUC=vrijednost` |
+| `.env.json` | **Flutter aplikacija** | JSON |
 
 ```bash
-cp .env.example .env
-# popuni SUPABASE_URL i SUPABASE_ANON_KEY iz izlaza `supabase status`
+cp .env.example .env            # backend / CLI
+cp env.example.json .env.json   # aplikacija
+# popuni oba iz izlaza `supabase status`
 ```
 
-> ⚠️ `service_role` ključ **nikad** ne ide u `.env` aplikacije — samo u Edge
-> Functions i CI secrets.
+> ⚠️ Flutter **ne čita** `.env` — projekat namjerno nema `flutter_dotenv`.
+> Konfiguracija ide kroz `String.fromEnvironment`, dakle kroz
+> `--dart-define-from-file`. Zato uz `.env` postoji i `.env.json`.
 
-### 3. Aplikacija
+> ⚠️ `service_role` ključ nikad ne ide ni u `.env.json` ni u `.env` aplikacije —
+> samo u Edge Functions i CI secrets. Vidi CLAUDE.md, sekcija 4.5.
+
+#### 3. Aplikacija
+
+`app/web/`, `app/android/` i `app/ios/` se **ne čuvaju u repozitoriju** (vidi
+`.gitignore`) — generišu se svježi za tačnu verziju tvog SDK-a:
 
 ```bash
 cd app
+flutter create --platforms=web,android --project-name mojzev .
 flutter pub get
-flutter run -d chrome        # web
-flutter run -d android       # android
+
+flutter run -d chrome  --dart-define-from-file=../.env.json
+flutter run -d android --dart-define-from-file=../.env.json
 ```
 
-### 4. Edge Functions
+`flutter create` nad postojećim projektom **ne prepisuje** `pubspec.yaml` ni
+`lib/`. Bez `--dart-define-from-file` aplikacija puca na startu sa
+`StateError: Nedostaje SUPABASE_URL...` — to je namjerno, vidi
+`Okruzenje.provjeri()`.
+
+#### 4. Edge Functions
 
 ```bash
 supabase functions serve

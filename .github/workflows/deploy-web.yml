@@ -19,7 +19,8 @@ on:
   push:
     branches:
       - main
-      - claude/mojzev-saas-architecture-nzq9wd
+      # Isti uzorak kao u ci.yml — inače se deploy ne pali za radne grane.
+      - "claude/**"
     paths:
       - "app/**"
       - ".github/workflows/deploy-web.yml"
